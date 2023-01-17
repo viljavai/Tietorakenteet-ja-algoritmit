@@ -1,1 +1,1 @@
-# Tietorakenteet-ja-algoritmit
+## Valikoituja ratkaistuja tehtäviä kurssilta tietorakenteet ja algoritmit
