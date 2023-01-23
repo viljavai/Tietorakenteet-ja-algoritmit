@@ -1,0 +1,53 @@
+anssiaisiin osallistuu n opiskelijaa Kumpulasta ja n opiskelijaa Viikistä. Molempien kampusten opiskelijat on numeroitu 1,2,…,n.
+
+Jokaisessa tanssiparissa toinen opiskelija on Kumpulasta ja toinen Viikistä, ja tiedät kaikki parit, jotka suostuvat tanssimaan keskenään. Jokainen opiskelija voi kuulua enintään yhteen tanssipariin. Mikä on suurin määrä pareja, jotka on mahdollista muodostaa?
+
+Voit olettaa, että n on enintään 50 ja luokan metodeita kutsutaan enintään 100 kertaa.
+
+Toteuta tiedostoon ball.py luokka Ball, jossa on seuraavat metodit:
+-konstruktori, jolle annetaan määrä n
+-add_pair määrittää, että Kumpulan opiskelija a ja Viikin opiskelija b suostuvat tanssimaan keskenään 
+-calculate ilmoittaa suurimman mahdollisen tanssiparien määrän
+
+####
+
+class Graph:
+    def __init__(self, n):
+            self.n = n
+            self.adj_matrix = [[0]*(n+1) for _ in range(n+1)]
+ 
+    def add_link(self, a, b):
+            self.adj_matrix[a][b] = 1
+ 
+    def max_match(self, graph):
+        n = graph.n
+        assign = [-1] * (n+1)
+        count = 0
+ 
+        for i in range(n+1):
+            visited = [False] * (n+1)
+            if self.match(graph, i, visited, assign):
+                count += 1
+ 
+        return count
+ 
+    def match(self, graph, a, visited, assign):
+        for i in range(graph.n+1):
+            if graph.adj_matrix[a][i] == 1 and not visited[i]:
+                visited[i] = True
+                assigned_a = assign[i]
+                if assigned_a < 0 or self.match(graph, assigned_a, visited, assign):
+                    assign[i] = a
+                    return True
+        return False
+ 
+class Ball:
+    def __init__(self,n):
+        self.n = n
+        self.res = Graph(n)
+ 
+    def add_pair(self,a,b):
+        self.res.add_link(a,b)
+ 
+    def calculate(self):
+        return self.res.max_match(self.res)

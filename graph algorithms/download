@@ -1,0 +1,60 @@
+Annettuna on tietoverkko, jossa on n tietokonetta ja niiden välisiä yhteyksiä. Jokaisen yhteyden kautta voi lähettää tietoa koneesta toiseen tietyn määrän bittejä sekunnissa.
+
+Tehtäväsi on tutkia, mikä on suurin mahdollinen tiedon määrä, joka voidaan välittää annetusta koneesta toiseen sekunnissa.
+
+Voit olettaa, että tietokoneita on enintään 50 ja luokan metodeita kutsutaan enintään 100 kertaa. Jokaisen yhteyden siirtomäärä on kokonaisluku välillä 1…1000.
+
+Toteuta tiedostoon download.py luokka Download, jossa on seuraavat metodit:
+
+-konstruktori, jolle annetaan tietokoneiden määrä
+-add_link lisää koneesta a koneeseen b yhteyden, joka siirtää x bittiä sekunnissa
+-calculate laskee suurimman mahdollisen siirtomäärän koneesta a koneeseen b
+
+#####
+
+from copy import deepcopy
+class Download:
+    def __init__(self,n):
+        self.n = n
+        self.graph = [[0]*(self.n+1) for _ in range(self.n+1)]
+ 
+    def add_link(self,a,b,x):
+        self.graph[a][b] += x
+ 
+    def bfs(self,a,b,parent,graph):
+        self.visited = [False]*(self.n+1)
+        jono = []
+        jono.append(a)
+        self.visited[a] = True
+        while len(jono) > 0:
+            x = jono.pop(0)
+            for i,v in enumerate(graph[x]):
+                if self.visited[i] == False and v > 0:
+                    jono.append(i)
+                    self.visited[i] = True
+                    parent[i] = x
+                    if i == b:
+                        return True
+        return False
+    
+    def ford_fulk(self,a,b,graph):
+        self.parent = [-1]*(self.n+1)
+        self.count = 0
+        while self.bfs(a,b,self.parent,graph):
+            min_w = 10**10
+            s = b
+            while s != a:
+                min_w = min(min_w,graph[self.parent[s]][s])
+                s = self.parent[s]
+            self.count += min_w
+            v = b
+            while v != a:
+                u = self.parent[v]
+                graph[u][v] -= min_w
+                graph[v][u] += min_w
+                v = self.parent[v]
+        return self.count
+ 
+    def calculate(self,a,b):
+        self.result = deepcopy(self.graph)
+        return self.ford_fulk(a,b,self.result)

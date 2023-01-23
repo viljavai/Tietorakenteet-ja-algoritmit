@@ -1,0 +1,14 @@
+Tehtäväsi on etsiä listasta pisin alijono, jossa jokaisen kahden vierekkäisen luvun ero on enintään 1. Esimerkiksi listassa [5,2,3,8,2,4,1] pisin tällainen alijono on [2,3,2,1], jonka pituus on 4.
+
+Voit olettaa, että 1≤n≤100 ja jokainen listan alkio on kokonaisluku välillä 1≤n≤100.
+
+########
+
+def find(t):
+    n = len(t)
+    lis = [1]*n
+    for i in range(n):
+        for j in range(i):
+            if t[i] == t[j]+1 or t[i] == t[j]-1 or t[i] == t[j]:
+                lis[i] = max(lis[i],lis[j]+1)
+    return max(lis)

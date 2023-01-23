@@ -1,0 +1,65 @@
+Pelissä on n planeettaa, jotka on numeroitu 1,2,…,n. Pelaaja aloittaa planeetalta 1 ja voittaa pelin, kun pääsee planeetalle n.
+
+Planeettojen välillä voi liikkua teleporteilla. Jokainen teleportti voidaan kuvata parilla (a,b), missä a<b: teleportti vie planeetalta a planeetalle b.
+
+Olet päässyt pelin läpi itse, mutta haluat estää, että kukaan voi enää voittaa peliä. Montako teleporttia sinun tulee poistaa vähintään pelistä?
+
+Voit olettaa, että n on enintään 50 ja luokan metodeita kutsutaan enintään 100 kertaa.
+
+Toteuta tiedostoon planets.py luokka Planets, jossa on seuraavat metodit:
+
+-konstruktori, jolle annetaan määrä n
+-add_teleport lisää teleportin planeetalta a
+planeetalle b
+-calculate ilmoittaa pienimmän poistettavien teleporttien määrän
+
+#####
+
+from copy import deepcopy
+class Planets:
+    def __init__(self,n):
+        self.n = n
+        self.graph = [[0]*(self.n+1) for _ in range(self.n+1)]
+ 
+    def add_teleport(self,a,b):
+        self.graph[a][b] += 1
+ 
+    def bfs(self,a,b,parent,graph):
+        self.visited = [False]*(self.n+1)
+        jono = []
+        jono.append(a)
+        self.visited[a] = True
+        while len(jono) > 0:
+            x = jono.pop(0)
+            for i,v in enumerate(graph[x]):
+                if self.visited[i] == False and v > 0:
+                    jono.append(i)
+                    self.visited[i] = True
+                    parent[i] = x
+                    if i == b:
+                        return True
+        return False
+    
+    def ford_fulk(self):
+        a = 1
+        b = self.n
+        self.parent = [-1]*(self.n+1)
+        self.count = 0
+        while self.bfs(a,b,self.parent,self.result):
+            min_w = 10**10
+            s = b
+            while s != a:
+                min_w = min(min_w,self.result[self.parent[s]][s])
+                s = self.parent[s]
+            self.count += min_w
+            v = b
+            while v != a:
+                u = self.parent[v]
+                self.result[u][v] -= min_w
+                self.result[v][u] += min_w
+                v = self.parent[v]
+        return self.count
+ 
+    def calculate(self):
+        self.result = deepcopy(self.graph)
+        return self.ford_fulk()
