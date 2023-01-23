@@ -1,4 +1,4 @@
-anssiaisiin osallistuu n opiskelijaa Kumpulasta ja n opiskelijaa Viikistä. Molempien kampusten opiskelijat on numeroitu 1,2,…,n.
+Tanssiaisiin osallistuu n opiskelijaa Kumpulasta ja n opiskelijaa Viikistä. Molempien kampusten opiskelijat on numeroitu 1,2,…,n.
 
 Jokaisessa tanssiparissa toinen opiskelija on Kumpulasta ja toinen Viikistä, ja tiedät kaikki parit, jotka suostuvat tanssimaan keskenään. Jokainen opiskelija voi kuulua enintään yhteen tanssipariin. Mikä on suurin määrä pareja, jotka on mahdollista muodostaa?
 
